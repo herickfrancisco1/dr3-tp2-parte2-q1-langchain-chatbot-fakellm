@@ -1,0 +1,21 @@
+flowchart TB
+    C(["Cliente<br/>curl · Swagger /docs"]) -- "1 · POST /chat {message}" --> V
+    subgraph API["FastAPI · uvicorn"]
+        direction LR
+        V["2 · Validação Pydantic<br/>ChatRequest"] --> R["3 · Rota /chat (async)"]
+    end
+    subgraph LC["LangChain · cadeia LCEL"]
+        direction LR
+        P["4 · PromptTemplate<br/>instruções + Pergunta: {question}"] --> L["5 · PredefinedAnswersLLM<br/>(Fake LLM)"]
+        L --> O["6 · StrOutputParser"]
+    end
+    R -- "chain.ainvoke()" --> P
+    L -. "palavras-chave" .-> F[("faq.json<br/>respostas pré-definidas")]
+    O -- "texto" --> R
+    R -- "7 · 200 JSON {answer, llm, elapsed_ms}" --> C
+    X["build_llm(): trocar 'fake' por<br/>ChatOpenAI não altera a cadeia"] -.- L
+    classDef ext fill:#eef2ff,stroke:#6366f1,color:#111;
+    classDef api fill:#ecfdf5,stroke:#10b981,color:#111;
+    classDef lc fill:#f0f9ff,stroke:#0ea5e9,color:#111;
+    classDef note fill:#fafafa,stroke:#a3a3a3,color:#333,stroke-dasharray: 4 3;
+    class C,F ext; class V,R api; class P,L,O lc; class X note;

@@ -1,0 +1,44 @@
+[
+  {
+    "intent": "saudacao",
+    "keywords": ["ola", "oi", "bom dia", "boa tarde", "boa noite", "hello", "hi"],
+    "example": "Olá, tudo bem?",
+    "answer": "Olá! Sou o assistente virtual do curso. Pergunte sobre horários, FastAPI, LangChain ou Fake LLM."
+  },
+  {
+    "intent": "horario",
+    "keywords": ["horario", "funcionamento", "abre", "fecha", "atendimento"],
+    "example": "Qual o horário de atendimento?",
+    "answer": "O atendimento funciona de segunda a sexta, das 8h às 18h."
+  },
+  {
+    "intent": "fastapi",
+    "keywords": ["fastapi", "api", "endpoint"],
+    "example": "O que é FastAPI?",
+    "answer": "FastAPI é um framework web Python moderno, assíncrono e baseado em type hints, com validação via Pydantic e documentação automática (OpenAPI/Swagger)."
+  },
+  {
+    "intent": "langchain",
+    "keywords": ["langchain", "chain", "cadeia"],
+    "example": "Para que serve o LangChain?",
+    "answer": "LangChain é um framework para compor aplicações com LLMs: prompts, modelos, parsers, memória e ferramentas encadeados com a LCEL (prompt | llm | parser)."
+  },
+  {
+    "intent": "fake_llm",
+    "keywords": ["fake llm", "fake", "llm falso", "simulado", "mock"],
+    "example": "Por que usar um Fake LLM?",
+    "answer": "Um Fake LLM devolve respostas determinísticas, sem custo e sem rede. Ele permite testar a cadeia, a API e a integração rapidamente antes de plugar um modelo real."
+  },
+  {
+    "intent": "ajuda",
+    "keywords": ["ajuda", "help", "o que voce faz", "como funciona"],
+    "example": "O que você sabe fazer?",
+    "answer": "Respondo perguntas pré-definidas sobre: saudação, horário de atendimento, FastAPI, LangChain e Fake LLM. Veja a lista em GET /faq."
+  },
+  {
+    "intent": "despedida",
+    "keywords": ["tchau", "obrigado", "obrigada", "ate logo", "valeu", "bye"],
+    "example": "Obrigado, tchau!",
+    "answer": "De nada! Até a próxima."
+  }
+]
