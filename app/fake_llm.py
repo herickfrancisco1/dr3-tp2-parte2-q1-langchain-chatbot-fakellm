@@ -25,6 +25,8 @@ DEFAULT_FALLBACK = (
 
 
 class FaqEntry(BaseModel):
+    """Uma entrada da FAQ (faq.json): intenção, palavras-chave, exemplo de pergunta e resposta."""
+
     intent: str
     keywords: list[str]
     example: str
@@ -38,6 +40,7 @@ def normalize(text: str) -> str:
 
 
 def load_faq(path: Path) -> list[FaqEntry]:
+    """Lê o faq.json e valida cada item com o modelo FaqEntry."""
     return [FaqEntry(**item) for item in json.loads(path.read_text(encoding="utf-8"))]
 
 
@@ -49,10 +52,12 @@ class PredefinedAnswersLLM(LLM):
 
     @property
     def _llm_type(self) -> str:
+        """Nome do tipo de LLM. É exigido pelo LangChain e aparece em logs e na resposta da API."""
         return "predefined-answers-fake-llm"
 
     @property
     def _identifying_params(self) -> dict[str, Any]:
+        """Parâmetros que identificam este LLM (o LangChain os usa, por exemplo, no cache)."""
         return {"intents": [entry.intent for entry in self.faq]}
 
     def _call(
@@ -62,6 +67,9 @@ class PredefinedAnswersLLM(LLM):
         run_manager: CallbackManagerForLLMRun | None = None,
         **kwargs: Any,
     ) -> str:
+        """Coração do Fake LLM: recebe o prompt pronto e devolve a resposta da FAQ com mais palavras-chave encontradas
+        na pergunta (ou a resposta padrão).
+        """
         question = normalize(prompt.rsplit(QUESTION_MARKER, 1)[-1])
         best_score, best_answer = 0, self.fallback
         for entry in self.faq:

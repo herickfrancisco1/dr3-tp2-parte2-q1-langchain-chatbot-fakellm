@@ -27,4 +27,5 @@ def build_llm(settings: Settings) -> BaseLanguageModel:
 
 
 def build_chain(llm: BaseLanguageModel) -> Runnable:
+    """Monta a cadeia LCEL: prompt -> LLM -> parser (o parser converte a saída do modelo em str)."""
     return PROMPT | llm | StrOutputParser()

@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Executado ao iniciar a API: cria o LLM (fake por padrão) e monta a cadeia uma única vez."""
     settings = get_settings()
     llm = build_llm(settings)
     app.state.chain = build_chain(llm)
@@ -40,6 +41,7 @@ app = FastAPI(
 
 
 def get_chain(request: Request) -> Runnable:
+    """Dependência do FastAPI: entrega à rota a cadeia montada no startup (ou HTTP 503)."""
     chain = getattr(request.app.state, "chain", None)
     if chain is None:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Chatbot ainda não inicializado.")
@@ -48,6 +50,7 @@ def get_chain(request: Request) -> Runnable:
 
 @app.get("/health", tags=["infra"])
 def health(request: Request) -> dict:
+    """Rota de verificação (GET /health): informa se a API está no ar e qual LLM está em uso."""
     return {"status": "ok", "llm": getattr(request.app.state, "llm_name", None)}
 
 
@@ -59,6 +62,9 @@ def faq() -> list[FaqItem]:
 
 @app.post("/chat", response_model=ChatResponse, tags=["chat"])
 async def chat(payload: ChatRequest, request: Request, chain: Runnable = Depends(get_chain)) -> ChatResponse:
+    """Rota POST /chat: envia a mensagem validada à cadeia LangChain (de forma assíncrona) e devolve a resposta em
+    JSON.
+    """
     start = time.perf_counter()
     answer = await chain.ainvoke({"question": payload.message})
     return ChatResponse(
