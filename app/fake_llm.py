@@ -66,9 +66,7 @@ class PredefinedAnswersLLM(LLM):
         best_score, best_answer = 0, self.fallback
         for entry in self.faq:
             # \b evita falsos positivos (ex.: 'oi' dentro de 'noite').
-            score = sum(
-                1 for kw in entry.keywords if re.search(rf"\b{re.escape(normalize(kw))}\b", question)
-            )
+            score = sum(1 for kw in entry.keywords if re.search(rf"\b{re.escape(normalize(kw))}\b", question))
             if score > best_score:
                 best_score, best_answer = score, entry.answer
         return best_answer

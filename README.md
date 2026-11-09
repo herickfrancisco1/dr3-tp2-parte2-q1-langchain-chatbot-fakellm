@@ -117,6 +117,14 @@ pytest -q
 | `APP_LLM_PROVIDER` | `fake` | `fake` ou `openai` (exige `pip install langchain-openai` e `OPENAI_API_KEY` exportada no ambiente) |
 | `APP_OPENAI_MODEL` | `gpt-4o-mini` | Modelo usado se o provedor for `openai` |
 
+### Qualidade de código
+
+O projeto usa o [ruff](https://docs.astral.sh/ruff/) (configuração em `ruff.toml`) como linter e formatador:
+
+```bash
+pip install ruff && ruff check . && ruff format --check .
+```
+
 ## Referências
 
 - LangChain: custom LLM — https://python.langchain.com/docs/how_to/custom_llm/

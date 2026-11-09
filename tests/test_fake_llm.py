@@ -1,3 +1,5 @@
+"""Testes do Fake LLM e da cadeia LangChain: respostas da FAQ, resposta padrão e normalização."""
+
 import pytest
 
 from app.chain import build_chain

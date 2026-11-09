@@ -1,3 +1,5 @@
+"""Testes HTTP da API do chatbot (o Fake LLM é leve, então o lifespan real é executado)."""
+
 import pytest
 from fastapi.testclient import TestClient
 
